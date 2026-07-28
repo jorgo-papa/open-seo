@@ -1,0 +1,46 @@
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Every Monday at 6am
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/every-app/open-seo.git
+          git fetch upstream
+
+      - name: Check for upstream changes
+        run: |
+          UPSTREAM_SHA=$(git rev-parse upstream/main)
+          FORK_SHA=$(git rev-parse HEAD)
+          if [ "$UPSTREAM_SHA" = "$FORK_SHA" ]; then
+            echo "No new changes from upstream"
+            exit 0
+          fi
+          echo "NEW_COMMITS=true" >> $GITHUB_ENV
+          echo "UPSTREAM_SHA=$UPSTREAM_SHA" >> $GITHUB_ENV
+
+      - name: Create pull request
+        if: env.NEW_COMMITS == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: sync upstream (${{ env.UPSTREAM_SHA }})"
+          title: "Sync upstream changes"
+          body: |
+            Automated sync from [every-app/open-seo](https://github.com/every-app/open-seo).
+
+            Review changes before merging to avoid overwriting Cloudflare-specific config.
+          branch: sync-upstream
+          base: main
+          delete-branch: true
