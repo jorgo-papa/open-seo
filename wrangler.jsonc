@@ -73,18 +73,18 @@
   "kv_namespaces": [
     {
       "binding": "KV",
-      "id": "4abd52f3f2c549ac83cc2cb4ceec8620",
+      "id": "35239266b1a54766831c3cfb956cda03",
     },
     {
       "binding": "OAUTH_KV",
-      "id": "bd1759494309474a9b423b029967b0db",
+      "id": "1dcfc13dd96943379083f5e913b14d86",
     },
   ],
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "open-seo",
-      "database_id": "37bee90a-e1aa-404f-b01e-b0d1d479bda1",
+      "database_name": "open-seo-jorgo-papa",
+      "database_id": "4f9ba4c2-c993-45ff-adfb-4ceb873f9ba1",
       "migrations_dir": "drizzle",
     },
   ],
@@ -107,7 +107,7 @@
   // ],
   "r2_buckets": [
     {
-      "bucket_name": "open-seo",
+      "bucket_name": "open-seo-jorgo-papa",
       "binding": "R2",
     },
   ],
